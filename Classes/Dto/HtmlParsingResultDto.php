@@ -14,6 +14,11 @@ class HtmlParsingResultDto implements ProtectedContextAwareInterface
     /**
      * @var string
      */
+    protected string $inputHtml;
+
+    /**
+     * @var string
+     */
     protected string $html;
 
     /**
@@ -31,7 +36,15 @@ class HtmlParsingResultDto implements ProtectedContextAwareInterface
         $this->inputHtml = $inputHtml;
         $this->html = $postProcessedHtml;
         $this->errors = $errors;
-        $this->hasAutofixedClosingTags = substr_count($postProcessedHtml, '</') > substr_count($inputHtml, '</');
+        // Determine if DOM added closing tags only when the input looked like actual HTML markup
+        // Heuristic: consider as markup if it contains any angle brackets, otherwise treat as plain text
+        $inputLooksLikeMarkup = (strpos($inputHtml, '<') !== false) || (strpos($inputHtml, '>') !== false);
+
+        if (!$inputLooksLikeMarkup) {
+            $this->hasAutofixedClosingTags = false;
+        } else {
+            $this->hasAutofixedClosingTags = substr_count($postProcessedHtml, '</') > substr_count($inputHtml, '</');
+        }
     }
 
     public function getInputHtml(): string
