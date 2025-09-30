@@ -43,7 +43,13 @@ class HtmlParsingResultDto implements ProtectedContextAwareInterface
         if (!$inputLooksLikeMarkup) {
             $this->hasAutofixedClosingTags = false;
         } else {
-            $this->hasAutofixedClosingTags = substr_count($postProcessedHtml, '</') > substr_count($inputHtml, '</');
+            // Ignore expansions of self-closing tags (<tag />) to <tag></tag>
+            $inputSelfClosingCount = preg_match_all('/<\s*([a-zA-Z0-9:-]+)(\s+[^>]*)?\/>/m', $inputHtml, $m1) ?: 0;
+            $postCloseCount = substr_count($postProcessedHtml, '</');
+            $inputCloseCount = substr_count($inputHtml, '</');
+            $closeDiff = $postCloseCount - $inputCloseCount;
+
+            $this->hasAutofixedClosingTags = $closeDiff > max(0, $inputSelfClosingCount);
         }
     }
 
