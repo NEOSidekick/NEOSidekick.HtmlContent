@@ -8,7 +8,7 @@ prototype(NEOSidekick.HtmlContent:Content.Html) < prototype(Neos.Neos:ContentCom
 
     renderer = Neos.Fusion:Component {
         @apply.props = ${props}
-        postProcessedHtml = ${NEOSidekick.HtmlContent.postProcessHtml(props.html)}
+        postProcessedHtml = ${NEOSidekickHtmlContent.postProcessHtml(props.html)}
         htmlIsValid = ${!this.postProcessedHtml.hasErrors()}
         sanitizedHtml = ${props.renderJavaScript ? this.postProcessedHtml.getHtml() : String.pregReplace(this.postProcessedHtml.getHtml(), '/<script[\s\S]*?>[\s\S]*?<\/script>/i', '')}
         showJavaScriptRemovaleNotice = ${node.context.inBackend && !props.renderJavaScript && String.pregMatch(this.postProcessedHtml.getHtml(), '/<script[\s\S]*?>[\s\S]*?<\/script>/i')}

@@ -11,4 +11,4 @@ Neos:
             - 'NodeTypes/*'
   Fusion:
     defaultContext:
-      NEOSidekick.HtmlContent: 'NEOSidekick\HtmlContent\Eel\Helper'
+      NEOSidekickHtmlContent: 'NEOSidekick\HtmlContent\Eel\Helper'
