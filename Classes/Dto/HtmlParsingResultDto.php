@@ -78,6 +78,16 @@ class HtmlParsingResultDto implements ProtectedContextAwareInterface
         return $this->hasAutofixedClosingTags;
     }
 
+    public function getHtmlWithoutJavaScript(): string
+    {
+        return preg_replace('/<script[\s\S]*?>[\s\S]*?<\/script>/i', '', $this->html);
+    }
+
+    public function hasJavaScript(): bool
+    {
+        return preg_match('/<script[\s\S]*?>[\s\S]*?<\/script>/i', $this->html) === 1;
+    }
+
     public function allowsCallOfMethod($methodName)
     {
         return true;

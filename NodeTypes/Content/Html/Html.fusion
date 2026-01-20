@@ -10,8 +10,8 @@ prototype(NEOSidekick.HtmlContent:Content.Html) < prototype(Neos.Neos:ContentCom
         @apply.props = ${props}
         postProcessedHtml = ${NEOSidekickHtmlContent.postProcessHtml(props.html)}
         htmlIsValid = ${!this.postProcessedHtml.hasErrors()}
-        sanitizedHtml = ${props.renderJavaScript ? this.postProcessedHtml.getHtml() : String.pregReplace(this.postProcessedHtml.getHtml(), '/<script[\s\S]*?>[\s\S]*?<\/script>/i', '')}
-        showJavaScriptRemovaleNotice = ${node.context.inBackend && !props.renderJavaScript && String.pregMatch(this.postProcessedHtml.getHtml(), '/<script[\s\S]*?>[\s\S]*?<\/script>/i')}
+        sanitizedHtml = ${props.renderJavaScript ? this.postProcessedHtml.getHtml() : this.postProcessedHtml.getHtmlWithoutJavaScript()}
+        showJavaScriptRemovaleNotice = ${node.context.inBackend && !props.renderJavaScript && this.postProcessedHtml.hasJavaScript()}
 
         renderer = afx`
             <div class="code-q-html-content">
