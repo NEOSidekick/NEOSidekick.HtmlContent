@@ -21,13 +21,15 @@ class Helper implements ProtectedContextAwareInterface
     public function postProcessHtml($html = ''): HtmlParsingResultDto
     {
         if (trim((string) $html) === '') {
-            return new HtmlParsingResultDto($html, '', []);
+            return new HtmlParsingResultDto((string)$html, '', []);
         }
 
         $internalErrorsInitialState = libxml_use_internal_errors(true);
         libxml_clear_errors();
         $dom = new DOMDocument;
-        $dom->loadHTML($html);
+        // We wrap the HTML in a body tag to ensure that script tags are not moved to the head
+        // We also add an XML encoding declaration to ensure that UTF-8 characters are parsed correctly
+        $dom->loadHTML('<?xml encoding="utf-8" ?><body>' . $html . '</body>');
         $postProcessedBodyNode = $dom->getElementsByTagName('body')->item(0);
         $postProcessedHtml = '';
         if ($postProcessedBodyNode !== null) {

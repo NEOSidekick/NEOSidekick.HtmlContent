@@ -58,3 +58,20 @@ Licensed under MIT, see [LICENSE](LICENSE)
 ## Contribution
 
 We will gladly accept contributions. Please send us pull requests.
+
+### Testing
+
+The package contains unit tests to verify the HTML parsing and validation logic.
+You can run the tests using PHPUnit.
+
+If you are using ddev (recommended):
+
+```bash
+ddev exec bin/phpunit -c UnitTests.xml DistributionPackages/NEOSidekick.HtmlContent/Tests/Unit
+```
+
+If you are running it directly:
+
+```bash
+bin/phpunit -c UnitTests.xml DistributionPackages/NEOSidekick.HtmlContent/Tests/Unit
+```
